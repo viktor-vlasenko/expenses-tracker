@@ -1,32 +1,36 @@
+import { useState } from "react";
 import ExpenseForm from "./ExpenseForm";
 import "./NewExpense.css";
 
 const NewExpense = (props) => {
+  const [formIsShown, setFormIsShown] = useState(false);
+
   const saveExpenseDataHadnler = (enteredExpenseData) => {
     const expenseData = {
       ...enteredExpenseData,
       id: Math.floor(Math.random() * 13 * 10000).toString(),
     };
     props.onAddExpense(expenseData);
+    setFormIsShown(false);
   };
 
-  const unfoldForm = () => {
-    props.onAddNewExpense();
+  const addNewExpenseHadndler = () => {
+    setFormIsShown(true);
   };
 
   const cancelHandler = () => {
-    props.onCancel();
+    setFormIsShown(false);
   };
 
   return (
     <div className="new-expense">
-      {props.isUnfolded ? (
+      {formIsShown ? (
         <ExpenseForm
           onSaveExpenseData={saveExpenseDataHadnler}
           onCancel={cancelHandler}
         />
       ) : (
-        <button onClick={unfoldForm}>Add New Expense</button>
+        <button onClick={addNewExpenseHadndler}>Add New Expense</button>
       )}
     </div>
   );
